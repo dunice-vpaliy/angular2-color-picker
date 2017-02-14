@@ -167,6 +167,7 @@ export class SliderDirective {
         } else {
             this.newValue.emit({ v: x / width, rg: this.rgX });
         }
+
     }
 
     move(event: any) {
@@ -199,8 +200,45 @@ export class SliderDirective {
 
 @Component({
     selector: 'color-picker',
-    templateUrl: './templates/default/color-picker.html',
-    styleUrls: ['./templates/default/color-picker.css']
+    template: `
+      <div class="color-picker" [hidden]="!show" [style.height.px]="cpHeight" [style.width.px]="cpWidth" #dialogPopup>
+<!--slider-->
+                  <div *ngIf="cpAlphaChannel==='disabled'" style="height: 18px;"></div>
+<!-- slider.h to quick run /1.7 for width color picker 175px-->
+                  <div [slider] [rgX]="1" (newValue)="setHue($event)" style="heigth: 5px; " class="hue" #hueSlider>
+                      <div [style.left.px]="slider.h/1.4" style="background: white;" class="cursor"></div>
+                  </div>
+                
+                  <div [hidden]="cpAlphaChannel==='disabled'" [slider] [style.background-color]="alphaSliderColor" [rgX]="1" (newValue)="setAlpha($event)" class="alpha" #alphaSlider>
+                      <div [style.left.px]="slider.a" class="cursor"></div>
+                  </div>
+<!--endside-->  
+          <div [hidden]="format!=0" class="hex-text">
+              <div class="box-color">
+                  <label>Color code     
+                  <input [text] (newValue)="setColorFromString($event)" [value]="hexText"/>
+                  </label>
+              </div>        
+          </div>
+              </div>
+          </div>
+          <div *ngIf="cpPresetColors && cpPresetColors.length" class="preset-area">
+             <hr>
+
+             <div class="preset-label">{{cpPresetLabel}}</div>
+
+             <div *ngFor="let color of cpPresetColors" class="preset-color" [style.backgroundColor]="color" (click)="setColorFromString(color)"></div>
+          </div>
+
+          <div class="button-area">
+              <button *ngIf="cpOKButton" type="button" class="{{cpOKButtonClass}}" (click)="oKColor()">{{cpOKButtonText}}</button>
+              <button *ngIf="cpCancelButton" type="button" class="{{cpCancelButtonClass}}" (click)="cancelColor()">{{cpCancelButtonText}}</button>
+          </div>
+        <div class="triangle-upper"></div>
+        <div class="triangle-inner"></div>
+      </div>
+    `,
+    styleUrls: ['./color-picker.directive.css']    
 })
 
 export class DialogComponent implements OnInit {
@@ -408,7 +446,7 @@ export class DialogComponent implements OnInit {
             var boxDirective = this.createBox(this.directiveElementRef.nativeElement, false);
             this.top = boxDirective.top;
             this.left = boxDirective.left;
-            this.position = 'fixed';
+            this.position = 'fixed'; //'fixed'
         }
         if (this.cpPosition === 'left') {
             this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
@@ -418,7 +456,7 @@ export class DialogComponent implements OnInit {
             this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
             this.arrowTop = dialogHeight - 1;
         } else if (this.cpPosition === 'bottom') {
-            this.top += boxDirective.height + this.dialogArrowSize;
+            this.top += boxDirective.height + this.dialogArrowSize + 27;
             this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
         } else {
             this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
@@ -484,6 +522,7 @@ export class DialogComponent implements OnInit {
     }
 
     update(emit: boolean = true) {
+        this.hsva.s = this.hsva.v = 1;
         let hsla = this.service.hsva2hsla(this.hsva);
         let rgba = this.service.denormalizeRGBA(this.service.hsvaToRgba(this.hsva));
         let hueRgba = this.service.denormalizeRGBA(this.service.hsvaToRgba(new Hsva(this.hsva.h, 1, 1, 1)));
