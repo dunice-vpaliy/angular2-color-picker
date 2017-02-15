@@ -201,12 +201,11 @@ export class SliderDirective {
 @Component({
     selector: 'color-picker',
     template: `
-      <div class="color-picker" [hidden]="!show" [style.height.px]="cpHeight" [style.width.px]="cpWidth" #dialogPopup>
+      <div class="color-picker" [hidden]="!show" [style.height.px]="cpHeight" #dialogPopup>
 <!--slider-->
                   <div *ngIf="cpAlphaChannel==='disabled'" style="height: 18px;"></div>
-<!-- slider.h to quick run /1.7 for width color picker 175px-->
                   <div [slider] [rgX]="1" (newValue)="setHue($event)" style="heigth: 5px; " class="hue" #hueSlider>
-                      <div [style.left.px]="slider.h/1.4" style="background: white;" class="cursor"></div>
+                      <div [style.left.px]="slider.h" style="background: white;" class="cursor"></div>
                   </div>             
                   <div [hidden]="cpAlphaChannel==='disabled'" [slider] [style.background-color]="alphaSliderColor" [rgX]="1" (newValue)="setAlpha($event)" class="alpha" #alphaSlider>
                       <div [style.left.px]="slider.a" class="cursor"></div>
@@ -237,16 +236,14 @@ export class SliderDirective {
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box;
-          margin: 0;
+          /*margin: 0;*/
           font-size: 11px;
-
       }
 
       .color-picker {
           cursor: default;
-          width: 230px;
+          width: 175px;
           height: 85px;
-          /*border: #777 solid 1px;*/
           border-radius: 5px;
           position: fixed;
           z-index: 1000;
@@ -268,6 +265,24 @@ export class SliderDirective {
               top: 45px;
               left: -120px;
           }
+      }
+
+      @media screen and (max-width: 640px) {
+         .color-picker {
+              position: static;
+              width: 100%;
+              box-shadow: none;
+          }
+         .color-picker .hue {
+              width: 80%;
+              margin-left: 10%;            
+          }
+         .triangle-upper{
+             visibility: hidden;
+         }
+         .triangle-inner{
+             visibility: hidden;
+         }
       }
 
       .color-picker i {
@@ -391,25 +406,6 @@ export class SliderDirective {
           border-radius: 20%;
       }
 
-      .triangle-with-shadow {
-        width: 100px;
-        height: 100px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 16px 10px -17px rgba(0, 0, 0, 0.5);
-      }
-      .triangle-with-shadow:after {
-        content: "";
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background: red;
-        transform: rotate(45deg); /* Prefixes... */
-        top: 75px;
-        left: 25px;
-        box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
-      }
-
       .color-picker .arrow-top {
           border-width: 10px 5px;
           border-color: #777 transparent transparent transparent;
@@ -467,7 +463,7 @@ export class SliderDirective {
           padding: 12px 8px
       }
 
-      .color-picker .hue {
+      .hue {
           cursor: pointer;
           width: 89%;
           height: 8px;
@@ -753,13 +749,13 @@ export class DialogComponent implements OnInit {
     }
 
     openColorPicker() {
-        if (!this.show) {
+        //if (!this.show) {
             this.setDialogPosition();
-            this.show = true;
+            this.show = !this.show;
             this.directiveInstance.toggle(true);
             document.addEventListener('mousedown', this.listenerMouseDown);
             window.addEventListener('resize', this.listenerResize);
-        }
+        //}
     }
 
     closeColorPicker() {
