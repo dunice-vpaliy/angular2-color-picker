@@ -207,8 +207,7 @@ export class SliderDirective {
 <!-- slider.h to quick run /1.7 for width color picker 175px-->
                   <div [slider] [rgX]="1" (newValue)="setHue($event)" style="heigth: 5px; " class="hue" #hueSlider>
                       <div [style.left.px]="slider.h/1.4" style="background: white;" class="cursor"></div>
-                  </div>
-                
+                  </div>             
                   <div [hidden]="cpAlphaChannel==='disabled'" [slider] [style.background-color]="alphaSliderColor" [rgX]="1" (newValue)="setAlpha($event)" class="alpha" #alphaSlider>
                       <div [style.left.px]="slider.a" class="cursor"></div>
                   </div>
@@ -220,16 +219,11 @@ export class SliderDirective {
                   </label>
               </div>        
           </div>
-              </div>
-          </div>
           <div *ngIf="cpPresetColors && cpPresetColors.length" class="preset-area">
              <hr>
-
              <div class="preset-label">{{cpPresetLabel}}</div>
-
              <div *ngFor="let color of cpPresetColors" class="preset-color" [style.backgroundColor]="color" (click)="setColorFromString(color)"></div>
           </div>
-
           <div class="button-area">
               <button *ngIf="cpOKButton" type="button" class="{{cpOKButtonClass}}" (click)="oKColor()">{{cpOKButtonText}}</button>
               <button *ngIf="cpCancelButton" type="button" class="{{cpCancelButtonClass}}" (click)="cancelColor()">{{cpCancelButtonText}}</button>
