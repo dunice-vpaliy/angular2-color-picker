@@ -203,8 +203,10 @@ export class SliderDirective {
     template: `
       <div class="color-picker" [hidden]="!show" [style.height.px]="cpHeight" [style.width.px]="cpWidth" #dialogPopup>
 <!--slider-->
+                  <div [slider] [style.background-color]="hueSliderColor" [rgX]="1" [rgY]="1" (newValue)="setSaturationAndBrightness($event)" class="saturation-lightness" #saturationLightness>
+                      <div [style.left.px]="slider.s" [style.top.px]="slider.v" class="cursor"></div>
+                  </div>
                   <div *ngIf="cpAlphaChannel==='disabled'" style="height: 18px;"></div>
-<!-- slider.h to quick run /1.7 for width color picker 175px-->
                   <div [slider] [rgX]="1" (newValue)="setHue($event)" style="heigth: 5px; " class="hue" #hueSlider>
                       <div [style.left.px]="slider.h/1.4" style="background: white;" class="cursor"></div>
                   </div>             
@@ -282,7 +284,7 @@ export class DialogComponent implements OnInit {
 
     @ViewChild('hueSlider') hueSlider: any;
     @ViewChild('alphaSlider') alphaSlider: any;
-
+    @ViewChild('saturationLightness') saturationLightness: any;
     @ViewChild('dialogPopup') dialogElement: any;
 
     constructor(private el: ElementRef, private service: ColorPickerService) { }
@@ -325,7 +327,8 @@ export class DialogComponent implements OnInit {
     ngOnInit() {
         let alphaWidth = this.alphaSlider.nativeElement.offsetWidth;
         let hueWidth = this.hueSlider.nativeElement.offsetWidth;
-        this.sliderDimMax = new SliderDimension(hueWidth, this.cpWidth, 130, alphaWidth);
+        let satAandBrigWidth = this.saturationLightness.nativeElement.offsetWidth;
+        this.sliderDimMax = new SliderDimension(hueWidth, satAandBrigWidth, 130, alphaWidth);
         this.slider = new SliderPosition(0, 0, 0, 0);
         if (this.cpOutputFormat === 'rgba') {
             this.format = 1;
