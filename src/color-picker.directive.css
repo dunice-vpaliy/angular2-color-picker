@@ -27,13 +27,37 @@
     top: 100px;
 }
 
-@media screen and (max-width: 1366px) {
-    .color-picker {
-        position: absolute;
-        top: 45px;
-        left: -120px;
-    }
-}
+      @media screen and (max-width: 1040px) {
+          .color-picker {
+              position: absolute;
+              top: 45px;
+              left: -120px;
+          }
+      }
+
+      @media screen and (max-width: 640px) {
+         .color-picker {
+              position: static;
+              width: 100%;
+              box-shadow: none;
+          }
+         .color-picker .hue {
+              width: 80%;
+              margin-left: 10%;            
+          }
+         .color-picker .saturation-lightness {
+             width: 80% !important;
+             margin-left: 10%;
+             border-bottom-right-radius: 5px;
+             border-bottom-left-radius: 5px;
+         }
+                  .triangle-upper{
+             visibility: hidden;
+         }
+         .triangle-inner{
+             visibility: hidden;
+         }
+      }
 
 .color-picker i {
     cursor: default;
