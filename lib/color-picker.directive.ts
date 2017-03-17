@@ -883,7 +883,6 @@ export class DialogComponent implements OnInit {
     }
 
     update(emit: boolean = true) {
-        this.hsva.s = this.hsva.v = 1;
         let hsla = this.service.hsva2hsla(this.hsva);
         let rgba = this.service.denormalizeRGBA(this.service.hsvaToRgba(this.hsva));
         let hueRgba = this.service.denormalizeRGBA(this.service.hsvaToRgba(new Hsva(this.hsva.h, 1, 1, 1)));
