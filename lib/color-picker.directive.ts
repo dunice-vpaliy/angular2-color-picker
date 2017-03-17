@@ -246,7 +246,7 @@ export class SliderDirective {
       .color-picker {
           cursor: default;
           width: 175px;
-          height: 85px;
+          height: 215px;
           border-radius: 5px;
           position: fixed;
           z-index: 1000;
@@ -394,10 +394,10 @@ export class SliderDirective {
           width: 0;
           height: 0;
           border-style: solid;
-          border-width: 0 10px 12px 10px;
+          border-width: 0 10px 10px 10px;
           border-color: transparent transparent white transparent;
           position: absolute;
-          bottom: 84px;
+          bottom: 215px;
           left:80px;
           z-index: 3;
           border-radius: 20%;
@@ -409,7 +409,7 @@ export class SliderDirective {
           border-width: 0 12.5px 12px 12.5px;
           border-color: transparent transparent rgba(153, 153, 153, 0.4) transparent;
           position: absolute;
-          bottom: 86px;
+          bottom: 215px;
           left: 78px;
           z-index: 0;
           border-radius: 20%;
